@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MEDICI STYLE · 作品集</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&family=Pinyon+Script&family=UnifrakturMaguntia&display=swap');
+
+  :root {
+    --bg: #f5f4f1;
+    --ink: #111111;
+    --muted: #8a8a8a;
+    --line: #dcdcd8;
+    --serif: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--serif);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: #111; color: #f5f4f1; }
+
+  /* ---------- 布局 ---------- */
+  .layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---------- 侧栏 ---------- */
+  .sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 260px;
+    padding: 44px 32px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--line);
+    background: var(--bg);
+    z-index: 20;
+  }
+
+  .site-title {
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .site-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 48px;
+    line-height: 1.7;
+  }
+
+  nav { display: flex; flex-direction: column; }
+  nav a {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 9px 0;
+    color: var(--muted);
+    border-bottom: 1px solid transparent;
+    transition: color .2s, transform .2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
+  nav a:hover { color: var(--ink); transform: translateX(4px); }
+  nav a.active { color: var(--ink); }
+  nav a .count { font-size: 10px; color: var(--muted); }
+
+  .sidebar-bottom {
+    margin-top: auto;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 2.2;
+    letter-spacing: 1px;
+  }
+  .sidebar-bottom a { border-bottom: 1px solid var(--line); transition: border-color .2s, color .2s; }
+  .sidebar-bottom a:hover { color: var(--ink); border-color: var(--ink); }
+
+  /* ---------- 内容区 ---------- */
+  .content {
+    grid-column: 2;
+    padding: 40px 48px 120px;
+    max-width: 1100px;
+  }
+
+  .view { display: none; animation: fadeIn .5s ease both; }
+  .view.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .view-head {
+    margin-bottom: 34px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 14px;
+  }
+  .view-head h1 {
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+  .view-head .meta { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+  /* ---------- 作品网格 ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px 24px;
+  }
+  .work { cursor: pointer; }
+  .work .thumb {
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: #e8e6e1;
+    position: relative;
+  }
+  .work .thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(35%) contrast(1.02);
+    transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .5s ease, opacity .6s ease;
+    opacity: 0;
+  }
+  .work .thumb img.loaded { opacity: 1; }
+  .work:hover .thumb img { transform: scale(1.05); filter: grayscale(0%) contrast(1.05); }
+  .work .caption {
+    margin-top: 10px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink);
+  }
+  .work .caption .cat { color: var(--muted); }
+  .work .index {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: #fff;
+    mix-blend-mode: difference;
+  }
+
+/* 中心 LOGO */
+.logo-wrap {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -52%);
+  cursor: pointer;
+  text-align: center;
+  z-index: 5;
+  transition: transform .5s ease;
+}
+.logo-wrap:hover { transform: translate(-50%, -52%) scale(1.03); }
+
+.logo-scene { position: relative; width: min(920px, 96vw); aspect-ratio: 920 / 460; margin: 0 auto; }
+.logo-scene > * { position: absolute; }
+
+/* 网点云 */
+.logo-halftone {
+  inset: -4% -2%;
+  background-image: radial-gradient(circle, rgba(80,80,85,.5) 1.5px, transparent 1.6px);
+  background-size: 10px 10px;
+  opacity: .65;
+  z-index: 1;
+  mask-image: radial-gradient(ellipse 62% 56% at 50% 46%, #000 28%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 62% 56% at 50% 46%, #000 28%, transparent 72%);
+}
+/* 局部故障纹理 */
+.logo-glitch {
+  inset: 0;
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  line-height: 12px;
+  color: #a2a2a2;
+  white-space: pre;
+  overflow: hidden;
+  opacity: .7;
+  z-index: 1;
+  mask-image: radial-gradient(ellipse 52% 58% at 50% 50%, #000 22%, transparent 68%);
+  -webkit-mask-image: radial-gradient(ellipse 52% 58% at 50% 50%, #000 22%, transparent 68%);
+}
+
+/* 分层字母 */
+.logo-word {
+  left: 12%; top: 18%;
+  font-family: "Pinyon Script", cursive;
+  font-size: clamp(104px, 20vw, 250px);
+  line-height: .82;
+  white-space: nowrap;
+}
+.lw-top    { left: 10%; top: 0%;  z-index: 6; }
+.lw-bottom { left: 34%; top: 34%; z-index: 5; }
+.logo-word span {
+  display: inline-block;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(3px 4px 0 rgba(28,28,42,.32)) drop-shadow(0 0 12px rgba(255,255,255,.55));
+}
+.lt-stripe {
+  background-image: repeating-linear-gradient(115deg,
+    #e3f1f8 0 6px, #9cc3dd 6px 9px, #f2f8fc 9px 15px, #b7d4e8 15px 19px, #dceef7 19px 24px);
+}
+.lt-dot {
+  background-image: radial-gradient(circle, #26262f 3.4px, transparent 3.6px),
+                    linear-gradient(180deg, #d3c2ec, #b9a3dc);
+  background-size: 17px 17px, auto;
+}
+.lt-solid { background-image: linear-gradient(180deg, #bca8dd 0%, #8f7ab5 100%); }
+.lt-ink   { background-image: linear-gradient(180deg, #43435a 0%, #23232f 100%); }
+/* 字母错落排布 */
+.logo-word span:nth-child(1)  { transform: rotate(-4deg) translateY(-6px); }
+.logo-word span:nth-child(2)  { transform: translateY(4px); }
+.logo-word span:nth-child(3)  { transform: rotate(2deg) translateY(-2px); }
+.logo-word span:nth-child(4)  { transform: translateY(6px) rotate(-2deg); }
+.logo-word span:nth-child(5)  { transform: translateY(-8px); }
+.logo-word span:nth-child(6)  { transform: rotate(3deg) translateY(3px); }
+.logo-word span:nth-child(7)  { transform: translateY(-4px); }
+.logo-word span:nth-child(8)  { transform: translateY(5px) rotate(-3deg); }
+
+/* 左侧紫色花饰 */
+.logo-floral { left: -1%; top: 4%; width: 118px; z-index: 3; }
+/* 右侧剪影小兽 */
+.logo-horse  { right: 3%; top: 30%; width: 230px; z-index: 3; }
+/* 四叶草 & 星光 */
+.logo-clover { right: 1%; top: 6%; width: 46px; z-index: 3; opacity: .85; }
+.logo-spark  { color: #bfe0ea; z-index: 3; text-shadow: 0 0 8px rgba(180,220,240,.9); }
+.logo-spark.s1 { left: 20%; top: 6%;  font-size: 22px; }
+.logo-spark.s2 { left: 55%; top: 84%; font-size: 15px; }
+.logo-spark.s3 { right: 14%; bottom: 2%; font-size: 18px; color: #cdbfe3; }
+
+.logo-sub {
+  font-family: "UnifrakturMaguntia", cursive;
+  font-size: clamp(12px, 1.6vw, 20px);
+  letter-spacing: 6px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+
+  .detail-bar {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--line);
+    z-index: 5;
+  }
+  .detail-bar .back {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color .2s;
+  }
+  .detail-bar .back:hover { color: var(--ink); }
+  .detail-bar .navbtns { display: flex; gap: 20px; }
+  .detail-bar .navbtns span {
+    font-size: 12px; letter-spacing: 2px;
+    cursor: pointer; color: var(--muted);
+    text-transform: uppercase;
+  }
+  .detail-bar .navbtns span:hover { color: var(--ink); }
+
+  .detail-body {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 50px 32px 120px;
+  }
+  .detail-body h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .detail-body .sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+  .detail-body .desc {
+    font-size: 14px;
+    line-height: 2;
+    color: #3c3c3c;
+    max-width: 560px;
+    margin-bottom: 44px;
+  }
+  .detail-body figure { margin-bottom: 24px; }
+  .detail-body figure img {
+    width: 100%;
+    display: block;
+    background: #e8e6e1;
+    min-height: 300px;
+    object-fit: cover;
+  }
+  .detail-body figcaption {
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+
+  /* ---------- 关于页 ---------- */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .about-text p { font-size: 15px; line-height: 2.1; color: #2e2e2e; margin-bottom: 24px; }
+  .about-text .label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 36px 0 10px;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+  }
+  .about-text ul { list-style: none; font-size: 13px; line-height: 2.4; color: #2e2e2e; }
+  .about-text ul li span { color: var(--muted); margin-right: 12px; font-size: 11px; letter-spacing: 1px; }
+  .about-photo { aspect-ratio: 3/4; overflow: hidden; background: #e8e6e1; }
+  .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(60%); }
+
+/* 缎带 The Portfolio */
+.ribbon-wrap {
+  position: absolute;
+  right: 5%; bottom: 20%;
+  z-index: 6;
+  cursor: pointer;
+  transform: rotate(-6deg);
+  transition: transform .4s ease;
+}
+.ribbon-wrap:hover { transform: rotate(-3deg) scale(1.06); }
+.paper-stack { position: relative; width: 130px; height: 86px; }
+.paper-stack i {
+  position: absolute; inset: 0;
+  background: #f3f1ee;
+  border: 1px solid #d8d4ce;
+  box-shadow: 0 6px 16px rgba(70,70,100,.22);
+}
+.paper-stack i:nth-child(1) { transform: rotate(-4deg) translate(-4px, 4px); }
+.paper-stack i:nth-child(2) { transform: rotate(2deg); }
+.paper-stack img {
+  position: absolute; width: 62%; height: 70%;
+  object-fit: cover; top: 8%; left: 8%;
+  filter: saturate(.7);
+}
+.ribbon {
+  position: absolute;
+  right: -34px; bottom: -20px;
+  background: linear-gradient(180deg, #c8b6e2, #a globals89ccb);
+  background: linear-gradient(180deg, #c8b6e2, #a189cb);
+  color: #fff;
+  font-family: "Pinyon Script", cursive;
+  font-size: 19px;
+  padding: 7px 26px;
+  clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%, 6% 50%);
+  box-shadow: 0 8px 18px rgba(120,100,170,.35);
+  white-space: nowrap;
+}
+
+  /* ---------- 页脚 ---------- */
+  footer {
+    grid-column: 2;
+    padding: 26px 48px;
+    border-top: 1px solid var(--line);
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ---------- 自定义光标点 ---------- */
+  .cursor-dot {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: #111;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100;
+    transform: translate(-50%, -50%);
+    transition: width .2s, height .2s, opacity .2s;
+    mix-blend-mode: difference;
+  }
+  body.has-cursor .cursor-dot { opacity: 1; }
+
+  /* ---------- 移动端 ---------- */
+  .menu-toggle { display: none; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar {
+      width: 100%;
+      bottom: auto;
+      transform: translateY(-100%);
+      transition: transform .35s ease;
+      border-bottom: 1px solid var(--line);
+      padding: 24px 24px 28px;
+    }
+    .sidebar.open { transform: translateY(0); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
+    .site-sub { margin-bottom: 24px; }
+    .sidebar-bottom { margin-top: 24px; }
+    .menu-toggle {
+      display: block;
+      position: fixed;
+      top: 18px; right: 20px;
+      z-index: 30;
+      background: none;
+      border: none;
+      font-size: 12px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink);
+    }
+    body.menu-open .menu-toggle { color: var(--muted); }
+    .content { padding: 90px 24px 90px; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
+    .detail-bar { padding: 16px 24px; }
+    .detail-body { padding: 36px 24px 90px; }
+    .about-grid { grid-template-columns: 1fr; }
+    footer { grid-column: 1; padding: 22px 24px; }
+  }
+  @media (max-width: 520px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="tip">← → 方向键翻页 · 点击页面或按钮交互</div>
+
+<div class="layout">
+
+<!-- ================= 首页 ================= -->
+<section class="page active" id="page-home">
+  <div class="home-menu">
+    <span class="menu-word underlined m-rtw"   onclick="go('cat', 'rtw')">Ready-to-wear</span>
+    <span class="menu-word m-under" onclick="go('cat', 'under')">Underwear</span>
+    <span class="menu-word m-acc"   onclick="go('cat', 'acc')">Accessories</span>
+    <span class="menu-word m-fonts" onclick="go('cat', 'font')">Fonts art</span>
+    <span class="menu-word m-other" onclick="go('cat', 'other')">Others</span>
+    <span class="menu-word m-photo" onclick="go('photo')">Photography</span>
+  </div>
+
+  <!-- 中心 LOGO → Introduction -->
+  <div class="logo-wrap" onclick="go('intro')">
+    <div class="logo-scene">
+      <div class="logo-halftone"></div>
+      <div class="logo-glitch" id="logoGlitch"></div>
+
+      <!-- 左侧紫色花饰 -->
+      <svg class="logo-floral" viewBox="0 0 100 180">
+        <g fill="#7f6aa8">
+          <path d="M50 6 C58 26 52 34 50 46 C48 34 42 26 50 6 Z"/>
+          <path d="M50 46 C68 40 80 50 78 64 C66 66 56 58 50 46 Z"/>
+          <path d="M50 46 C32 40 20 50 22 64 C34 66 44 58 50 46 Z"/>
+          <path d="M50 66 C62 74 62 88 50 98 C38 88 38 74 50 66 Z"/>
+          <path d="M50 98 C64 96 72 106 70 118 C58 118 52 110 50 98 Z"/>
+          <path d="M50 98 C36 96 28 106 30 118 C42 118 48 110 50 98 Z"/>
+          <path d="M50 118 C58 132 54 146 50 158 C46 146 42 132 50 118 Z"/>
+          <circle cx="50" cy="46" r="5" fill="#e9e2f4"/>
+          <circle cx="50" cy="98" r="5" fill="#e9e2f4"/>
+          <path d="M50 158 q-4 10 0 20 q4 -10 0 -20 Z"/>
+          <path d="M28 150 q-12 6 -14 16 q12 -2 18 -10 Z" opacity=".8"/>
+          <path d="M72 150 q12 6 14 16 q-12 -2 -18 -10 Z" opacity=".8"/>
+        </g>
+      </svg>
+
+      <!-- 右侧剪影小兽（毛绒边缘） -->
+      <svg class="logo-horse" viewBox="0 0 220 200">
+        <defs>
+          <filter id="fuzz"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="16"/></filter>
+          <linearGradient id="bodyG" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#44525e"/><stop offset="1" stop-color="#2c3842"/>
+          </linearGradient>
+        </defs>
+        <g filter="url(#fuzz)">
+          <circle cx="118" cy="58" r="34" fill="#cdb9e8"/>
+          <circle cx="138" cy="42" r="22" fill="#b9a3dc"/>
+          <circle cx="102" cy="86" r="26" fill="#dccdec"/>
+          <circle cx="84" cy="112" r="24" fill="#c4b0e2"/>
+          <circle cx="150" cy="80" r="18" fill="#e3d8f2"/>
+        </g>
+        <path fill="url(#bodyG)" opacity=".92" d="M74 24 q-10 -6 -8 -15 q9 2 13 9 q2 -9 11 -8 q6 6 2 13 q5 2 7 9 q-2 6 -9 8 q7 15 19 23 q14 10 18 25 q4 12 14 18 q10 6 12 16 l-11 2 q-6 -8 -14 -12 q-2 12 2 24 l-10 1 q-4 -14 0 -27 q-10 -8 -16 -20 q-8 10 -20 12 q-14 2 -22 -4 q-10 -8 -6 -18 q4 -10 16 -10 q10 0 16 -7 q-10 -10 -6 -21 z"/>
+        <circle cx="122" cy="56" r="4.5" fill="#fff" opacity=".9"/>
+      </svg>
+
+      <!-- 四叶草 -->
+      <svg class="logo-clover" viewBox="0 0 40 40">
+        <g fill="#bfe0ea">
+          <circle cx="20" cy="12" r="8"/><circle cx="12" cy="20" r="8"/>
+          <circle cx="28" cy="20" r="8"/><circle cx="20" cy="28" r="8"/>
+        </g>
+        <path d="M20 30 q-2 6 1 10" stroke="#bfe0ea" stroke-width="2" fill="none"/>
+      </svg>
+
+      <span class="logo-spark s1">✦</span>
+      <span class="logo-spark s2">✦</span>
+      <span class="logo-spark s3">✦</span>
+
+      <!-- 分层花体字 -->
+      <div class="logo-word">
+        <span class="lt-stripe">F</span><span class="lt-dot">u</span><span class="lt-stripe">u</span><span class="lt-solid">u</span><span class="lt-ink">u</span><span class="lt-stripe">2</span><span class="lt-dot">u</span><span class="lt-stripe">i</span><span class="lt-ink">1</span>
+      </div>
+    </div>
+    <div class="logo-sub">FASHION &amp; VISUAL ARCHIVE</div>
+  </div>
+
+    <div class="sidebar-bottom">
+      <a href="mailto:hello@example.com">hello@example.com</a><br>
+      <a href="#" onclick="return false">Instagram</a> ·
+      <a href="#" onclick="return false">Weibo</a><br>
+      上海 / Shanghai
+    </div>
+  </aside>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</button>
+
+  <!-- ===== 内容 ===== -->
+  <main class="content">
+
+    <!-- 全部 / 分类 共用 -->
+    <section class="view active" id="view-works">
+      <div class="view-head">
+        <h1 id="worksTitle">全部作品</h1>
+        <div class="meta" id="worksMeta"></div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <!-- 关于 -->
+    <section class="view" id="view-about">
+      <div class="view-head">
+        <h1>关于 About</h1>
+        <div class="meta">EST. 2020</div>
+      </div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>你好，我是一名时装与视觉设计师，作品横跨成衣、针织、配饰、字体实验与摄影。我相信不同媒介之间可以互相渗透——一块面料、一个字形、一张照片，都可能是同一种表达的不同切面。</p>
+          <p>工作方法偏概念驱动：先建立叙事框架，再回到材质、剪裁与排印的细节里反复打磨。我喜欢"未完成感"，它让作品保留呼吸的空间。</p>
+          <div class="label">经历 Experience</div>
+          <ul>
+            <li><span>2024 —</span>独立工作室主理人</li>
+            <li><span>2022 — 24</span>某设计工作室 · 时装设计师</li>
+            <li><span>2020 — 22</span>某品牌 · 助理设计师</li>
+          </ul>
+          <div class="label">服务 Services</div>
+          <ul>
+            <li><span>01</span>成衣 / 针织系列设计</li>
+            <li><span>02</span>品牌视觉与排印</li>
+            <li><span>03</span>艺术指导与摄影</li>
+          </ul>
+        </div>
+        <div class="about-photo">
+          <img src="https://picsum.photos/seed/atelier9/800/1060" alt="工作室" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系 -->
+    <section class="view" id="view-contact">
+      <div class="view-head">
+        <h1>联系 Contact</h1>
+        <div class="meta">欢迎合作与咨询</div>
+      </div>
+      <div class="contact-list">
+        <a href="mailto:hello@example.com">hello@example.com <small>EMAIL · 项目合作</small></a>
+        <a href="#" onclick="return false">Instagram <small>日常与过程记录</small></a>
+        <a href="#" onclick="return false">Weibo <small>中文内容更新</small></a>
+        <a href="#" onclick="return false">WeChat <small>工作微信 · 请注明来意</small></a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>© 2026 Medici Style</span>
+    <span>Designed with care</span>
+  </footer>
+</div>
+
+<!-- ===== 作品详情 ===== -->
+<div class="detail" id="detail">
+  <div class="detail-bar">
+    <span class="back" onclick="closeDetail()">← Back 返回</span>
+    <div class="navbtns">
+      <span onclick="stepDetail(-1)">Prev</span>
+      <span onclick="stepDetail(1)">Next</span>
+    </div>
+  </div>
+  <div class="detail-body" id="detailBody"></div>
+</div>
+
+<script>
+  /* ---------------- 数据 ---------------- */
+  const CAT_NAMES = {
+    rtw:  "Ready-to-wear 成衣",
+    knit: "Knitwear 针织",
+    acc:  "Accessories 配饰",
+    font: "Font Art 字体艺术",
+    photo:"Photography 摄影",
+    other:"Others 其他"
+  };
+
+  const WORKS = [
+    { id:1,  title:"褶皱研究 No.3", cat:"rtw",  year:"2026", seed:"fashion12",
+      desc:"以单一面料、多种褶皱工艺构成的胶囊系列。通过折叠与热定型让平面布料产生建筑般的立体结构，探索「覆盖」与「显露」之间的平衡。" },
+    { id:2,  title:"未完成的剪裁", cat:"rtw",  year:"2025", seed:"fashion27",
+      desc:"一系列刻意保留毛边与外露缝线的成衣。让制作过程的痕迹成为设计语言的一部分，质疑「完成」的边界。" },
+    { id:3,  title:"灰色变奏", cat:"rtw",  year:"2025", seed:"fashion33",
+      desc:"由七种不同深浅的灰色组成的系列，弱化色彩干扰，把注意力交给廓形与面料的肌理变化。" },
+    { id:4,  title:"手织档案", cat:"knit", year:"2026", seed:"knit08",
+      desc:"使用家用编织机完成的实验性针织作品，将传统纹样拆解成像素化的色块，重新编织成可穿着的「图像」。" },
+    { id:5,  title:"松散结构", cat:"knit", year:"2024", seed:"knit21",
+      desc:"探索脱散、镂空与失败针法的偶然美感。每一件都不可复制，织错的地方被保留下来。" },
+    { id:6,  title:"金属编织胸饰", cat:"acc",  year:"2025", seed:"acc05",
+      desc:"以细金属丝手工编织的胸饰系列，硬质材料呈现出织物的柔软错觉。" },
+    { id:7,  title:"皮革小物", cat:"acc",  year:"2024", seed:"acc17",
+      desc:"边角料的再利用计划：将制衣剩余的皮革碎片拼接为包袋与小配饰。" },
+    { id:8,  title:"字模标本", cat:"font", year:"2026", seed:"font02",
+      desc:"一套基于活字印刷的实验字体，将笔画拆解后重新组装，探索「可读性的最低限度」。" },
+    { id:9,  title:"噪点海报系列", cat:"font", year:"2025", seed:"font19",
+      desc:"为虚构展览设计的排印海报。文字既是内容也是纹理，被反复放大、复制与磨损。" },
+    { id:10, title:"街头即景", cat:"photo", year:"2026", seed:"photo11",
+      desc:"用一台老旧胶片机记录城市里的偶然瞬间：反光、影子、路人的姿态。" },
+    { id:11, title:"布料静物", cat:"photo", year:"2025", seed:"photo24",
+      desc:"将面料悬挂、堆叠与打光，拍摄一组没有人物的「时装照片」。" },
+    { id:12, title:"手稿与废片", cat:"other", year:"2025", seed:"misc07",
+      desc:"过程资料的整理：未采用的草稿、试衣间的废片与工作台的一角。" },
+  ];
+
+  const CAT_LABELS = Object.entries(CAT_NAMES);
+
+  /* ---------------- 状态与渲染 ---------------- */
+  let currentView = "works";
+  let currentCat  = null;
+  let currentId   = null;
+
+  const grid      = document.getElementById("grid");
+  const worksTitle= document.getElementById("worksTitle");
+  const worksMeta = document.getElementById("worksMeta");
+
+  function filtered() {
+    return currentCat ? WORKS.filter(w => w.cat === currentCat) : WORKS;
+  }
+
+  function renderGrid() {
+    const list = filtered();
+    worksTitle.textContent = currentCat ? CAT_NAMES[currentCat] : "全部作品";
+    worksMeta.textContent  = list.length + " 项 / " +
+      (currentCat ? "CATEGORY" : "SELECTED WORKS · 2024 — 2026");
+
+    grid.innerHTML = list.map((w, i) => `
+      <div class="work" onclick="openDetail(${w.id})">
+        <div class="thumb">
+          <img src="https://picsum.photos/seed/${w.seed}/640/860" alt="${w.title}"
+               loading="lazy" onload="this.classList.add('loaded')" />
+          <span class="index">${String(i + 1).padStart(2, "0")}</span>
+        </div>
+        <div class="caption">
+          <span>${w.title}</span>
+          <span class="cat">${CAT_NAMES[w.cat].split(" ")[0]} · ${w.year}</span>
+        </div>
+      </div>
+    `).join("");
+
+    // 侧栏计数
+    document.getElementById("countAll").textContent = WORKS.length;
+  }
+
+  function renderNav() {
+    document.querySelectorAll("#nav a").forEach(a => {
+      const isWorks = a.dataset.view === "works";
+      const isCat   = a.dataset.view === "cat" && a.dataset.cat === currentCat;
+      const isPage  = (a.dataset.view === "about" && currentView === "about") ||
+                      (a.dataset.view === "contact" && currentView === "contact");
+      a.classList.toggle("active", (isWorks && !currentCat && (currentView === "works")) || isCat || isPage);
+    });
+  }
+
+  function showView(name, cat = null) {
+    currentView = name;
+    currentCat  = (name === "works") ? cat : null;
+
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.getElementById("view-" + name).classList.add("active");
+
+    if (name === "works") renderGrid();
+    renderNav();
+    closeMenu();
+    window.scrollTo({ top: 0 });
+    closeDetail(true);
+  }
+
+  /* ---------------- 详情 ---------------- */
+  const detail     = document.getElementById("detail");
+  const detailBody = document.getElementById("detailBody");
+
+  function openDetail(id) {
+    currentId = id;
+    const w = WORKS.find(x => x.id === id);
+    detailBody.innerHTML = `
+      <h1>${w.title}</h1>
+      <div class="sub">${CAT_NAMES[w.cat]} · ${w.year} · WORK ${String(w.id).padStart(2, "0")}/${WORKS.length}</div>
+      <p class="desc">${w.desc}</p>
+      <figure>
+        <img src="https://picsum.photos/seed/${w.seed}/1200/800" alt="${w.title} 01" />
+        <figcaption>Fig. 01 — Overview</figcaption>
+      </figure>
+      <figure>
+        <img src="https://picsum.photos/seed/${w.seed}b/1200/800" alt="${w.title} 02" />
+        <figcaption>Fig. 02 — Detail</figcaption>
+      </figure>
+      <figure>
+        <img src="https://picsum.photos/seed/${w.seed}c/1200/800" alt="${w.title} 03" />
+        <figcaption>Fig. 03 — Process</figcaption>
+      </figure>
+    `;
+    detail.classList.add("open");
+    document.body.style.overflow = "hidden";
+    detail.scrollTop = 0;
+  }
+
+  function stepDetail(dir) {
+    const idx = WORKS.findIndex(x => x.id === currentId);
+    const next = WORKS[(idx + dir + WORKS.length) % WORKS.length];
+    openDetail(next.id);
+  }
+
+  function closeDetail(silent) {
+    detail.classList.remove("open");
+    document.body.style.overflow = "";
+    if (!silent) currentId = null;
+  }
+
+  /* ---------------- 导航事件 ---------------- */
+  document.querySelectorAll("#nav a").forEach(a => {
+    a.addEventListener("click", () => {
+      if (a.dataset.view === "cat") showView("works", a.dataset.cat);
+      else showView(a.dataset.view);
+    });
+  });
+
+  function toggleMenu() {
+    document.getElementById("sidebar").classList.toggle("open");
+    document.body.classList.toggle("menu-open");
+  }
+  document.getElementById("glitch").textContent = out;
+})();
+
+  /* ---------------- 键盘 ---------------- */
+  document.addEventListener("keydown", e => {
+    if (detail.classList.contains("open")) {
+      if (e.key === "Escape") closeDetail();
+      if (e.key === "ArrowRight") stepDetail(1);
+      if (e.key === "ArrowLeft")  stepDetail(-1);
+    }
+  });
+
+  /* ---------------- 自定义光标 ---------------- */
+  const dot = document.getElementById("cursorDot");
+  document.addEventListener("mousemove", e => {
+    dot.style.left = e.clientX + "px";
+    dot.style.top  = e.clientY + "px";
+    document.body.classList.add("has-cursor");
+  });
+  document.addEventListener("mouseleave", () => document.body.classList.remove("has-cursor"));
+
+  /* ---------------- 初始化 ---------------- */
+  renderGrid();
+  renderNav();
+</script>
+</body>
+</html>
