@@ -3,175 +3,115 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>MEDICI STYLE · 作品集</title>
+<title>Fuuu2ui1 · Portfolio</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Monsieur+La+Doulaise&family=Pinyon+Script&family=UnifrakturMaguntia&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Monsieur+La+Doulaise&family=Pinyon+Script&family=UnifrakturMaguntia&display=swap');
 
-  :root {
-    --bg: #f5f4f1;
-    --ink: #111111;
-    --muted: #8a8a8a;
-    --line: #dcdcd8;
-    --serif: "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
-  }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  html { scroll-behavior: smooth; }
-  body {
-    font-family: var(--serif);
-    background: var(--bg);
-    color: var(--ink);
-    font-size: 14px;
-    -webkit-font-smoothing: antialiased;
-  }
+:root {
+  --ink: #1a1a1a;
+  --muted: #8f8f8f;
+  --lav: #b9a7d8;
+  --lav-deep: #8f7ab5;
+  --sky: #bfe0ea;
+  --mint: #dceee9;
+  --pink: #f0d7e8;
+}
 
-  a { color: inherit; text-decoration: none; }
-  ::selection { background: #111; color: #f5f4f1; }
+html, body { height: 100%; }
+body {
+  font-family: "Times New Roman", "Songti SC", "SimSun", serif;
+  background: #fdfdfd;
+  color: var(--ink);
+  overflow-x: hidden;
+}
 
-  /* ---------- 布局 ---------- */
-  .layout {
-    display: grid;
-    grid-template-columns: 260px 1fr;
-    min-height: 100vh;
-  }
+::selection { background: var(--lav); color: #fff; }
 
-  /* ---------- 侧栏 ---------- */
-  .sidebar {
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    width: 260px;
-    padding: 44px 32px;
-    display: flex;
-    flex-direction: column;
-    border-right: 1px solid var(--line);
-    background: var(--bg);
-    z-index: 20;
-  }
+/* ================= 背景层 ================= */
+.bg { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
 
-  .site-title {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 6px;
-  }
-  .site-sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 1px;
-    margin-bottom: 48px;
-    line-height: 1.7;
-  }
+/* ASCII 噪点 / 故障纹理 */
+#glitch {
+  font-family: "Courier New", monospace;
+  font-size: 9px;
+  line-height: 11px;
+  color: #b9b9b9;
+  opacity: .35;
+  white-space: pre;
+  overflow: hidden;
+  letter-spacing: 1px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 40%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, #000 40%, transparent 75%);
+}
 
-  nav { display: flex; flex-direction: column; }
-  nav a {
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 9px 0;
-    color: var(--muted);
-    border-bottom: 1px solid transparent;
-    transition: color .2s, transform .2s;
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
-  nav a:hover { color: var(--ink); transform: translateX(4px); }
-  nav a.active { color: var(--ink); }
-  nav a .count { font-size: 10px; color: var(--muted); }
+/* 半调网点 */
+.halftone {
+  background-image: radial-gradient(circle, rgba(130,150,200,.28) 1.4px, transparent 1.5px);
+  background-size: 11px 11px;
+}
 
-  .sidebar-bottom {
-    margin-top: auto;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 2.2;
-    letter-spacing: 1px;
-  }
-  .sidebar-bottom a { border-bottom: 1px solid var(--line); transition: border-color .2s, color .2s; }
-  .sidebar-bottom a:hover { color: var(--ink); border-color: var(--ink); }
+/* 水彩晕染 */
+.blob { position: absolute; border-radius: 50%; filter: blur(38px); }
+.blob.b1 { width: 46vw; height: 30vw; left: -8vw;  top: 4vh;  background: rgba(205,190,228,.55); }
+.blob.b2 { width: 38vw; height: 26vw; right: -6vw; top: 18vh; background: rgba(185,220,235,.5); }
+.blob.b3 { width: 34vw; height: 22vw; left: 18vw;  bottom: -4vh; background: rgba(225,205,238,.45); }
+.blob.b4 { width: 26vw; height: 18vw; right: 14vw; bottom: 8vh; background: rgba(215,232,240,.5); }
 
-  /* ---------- 内容区 ---------- */
-  .content {
-    grid-column: 2;
-    padding: 40px 48px 120px;
-    max-width: 1100px;
-  }
+/* ================= 页面结构 ================= */
+.page {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: none;
+  animation: pageIn .6s ease both;
+}
+.page.active { display: block; }
+@keyframes pageIn { from { opacity: 0; } to { opacity: 1; } }
 
-  .view { display: none; animation: fadeIn .5s ease both; }
-  .view.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.script { font-family: "Monsieur La Doulaise", cursive; }
+.pinyon { font-family: "Pinyon Script", cursive; }
+.fraktur { font-family: "UnifrakturMaguntia", cursive; }
 
-  .view-head {
-    margin-bottom: 34px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    border-bottom: 1px solid var(--ink);
-    padding-bottom: 14px;
-  }
-  .view-head h1 {
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-  }
-  .view-head .meta { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+/* 首页散落的菜单字 */
+.menu-word {
+  position: absolute;
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: clamp(26px, 4.2vw, 46px);
+  color: var(--ink);
+  text-shadow: 0 0 1px #000, 1px 1px 0 rgba(120,100,160,.25);
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  transition: transform .4s cubic-bezier(.2,.8,.2,1), color .3s, text-shadow .3s;
+  z-index: 6;
+}
+.menu-word:hover {
+  color: var(--lav-deep);
+  text-shadow: 0 0 14px rgba(150,120,200,.6), 0 0 1px #000;
+  transform: scale(1.12) rotate(-2deg);
+}
 
-  /* ---------- 作品网格 ---------- */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px 24px;
-  }
-  .work { cursor: pointer; }
-  .work .thumb {
-    aspect-ratio: 3 / 4;
-    overflow: hidden;
-    background: #e8e6e1;
-    position: relative;
-  }
-  .work .thumb img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: grayscale(35%) contrast(1.02);
-    transition: transform .8s cubic-bezier(.2,.8,.2,1), filter .5s ease, opacity .6s ease;
-    opacity: 0;
-  }
-  .work .thumb img.loaded { opacity: 1; }
-  .work:hover .thumb img { transform: scale(1.05); filter: grayscale(0%) contrast(1.05); }
-  .work .caption {
-    margin-top: 10px;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    display: flex;
-    justify-content: space-between;
-    color: var(--ink);
-  }
-  .work .caption .cat { color: var(--muted); }
-  .work .index {
-    position: absolute;
-    top: 10px; left: 10px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: #fff;
-    mix-blend-mode: difference;
-  }
+.menu-word.m-rtw   { top: 6%;  left: 9%; }
+.menu-word.m-under { top: 7%;  left: 43%; }
+.menu-word.m-acc   { top: 7%;  right: 7%; }
+.menu-word.m-fonts { bottom: 8%; left: 10%; }
+.menu-word.m-other { bottom: 8%; left: 44%; }
+.menu-word.m-photo { bottom: 8%; right: 7%; }
 
 /* 中心 LOGO */
 .logo-wrap {
   position: absolute;
   top: 50%; left: 50%;
-  transform: translate(-50%, -52%);
+  transform: translate(-50%, -50%);
   cursor: pointer;
-  text-align: center;
   z-index: 5;
   transition: transform .5s ease;
 }
-.logo-wrap:hover { transform: translate(-50%, -52%) scale(1.03); }
+.logo-wrap:hover { transform: translate(-50%, -50%) scale(1.03); }
 
-.logo-scene { position: relative; width: min(920px, 96vw); aspect-ratio: 920 / 460; margin: 0 auto; }
+.logo-scene { position: relative; width: min(1040px, 98vw); aspect-ratio: 1040 / 520; margin: 0 auto; }
 .logo-scene > * { position: absolute; }
 
 /* 网点云 */
@@ -199,22 +139,62 @@
   -webkit-mask-image: radial-gradient(ellipse 52% 58% at 50% 50%, #000 22%, transparent 68%);
 }
 
-/* 分层字母 */
+/* ===== 数码感背景层 ===== */
+/* 二进制数字雨 */
+.logo-digital {
+  inset: -2% 0;
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 3px;
+  color: rgba(70,82,118,.5);
+  white-space: pre;
+  overflow: hidden;
+  z-index: 1;
+  mask-image: radial-gradient(ellipse 66% 62% at 50% 50%, #000 35%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 66% 62% at 50% 50%, #000 35%, transparent 80%);
+}
+/* 扫描线 */
+.logo-scan {
+  inset: -4% -2%;
+  background: repeating-linear-gradient(0deg, rgba(90,100,145,.14) 0 2px, transparent 2px 7px);
+  z-index: 2;
+  mask-image: radial-gradient(ellipse 60% 55% at 50% 48%, #000 30%, transparent 76%);
+  -webkit-mask-image: radial-gradient(ellipse 60% 55% at 50% 48%, #000 30%, transparent 76%);
+}
+/* 像素网格 */
+.logo-pixels {
+  inset: -2% 0;
+  background-image:
+    linear-gradient(90deg, rgba(110,120,165,.16) 1px, transparent 1px),
+    linear-gradient(rgba(110,120,165,.16) 1px, transparent 1px);
+  background-size: 16px 16px;
+  z-index: 1;
+  mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, #000 25%, transparent 72%);
+  -webkit-mask-image: radial-gradient(ellipse 58% 52% at 50% 50%, #000 25%, transparent 72%);
+}
+
+/* 分层字母：Fuuu 在上层（左上），2ui1 在下层（右下），互相叠压 */
 .logo-word {
-  left: 12%; top: 18%;
-  font-family: "Pinyon Script", cursive;
-  font-size: clamp(104px, 20vw, 250px);
-  line-height: .82;
+  font-family: "Great Vibes", "Pinyon Script", cursive;
+  font-size: clamp(130px, 24vw, 300px);
+  line-height: 1;
   white-space: nowrap;
+  filter:
+    drop-shadow(1px 1px 0 rgba(30,30,45,.9))
+    drop-shadow(2px 2px 0 rgba(30,30,45,.75))
+    drop-shadow(4px 4px 0 rgba(30,30,45,.55))
+    drop-shadow(6px 6px 0 rgba(30,30,45,.35))
+    drop-shadow(12px 18px 18px rgba(25,25,40,.35));
 }
 .lw-top    { left: 10%; top: 0%;  z-index: 6; }
-.lw-bottom { left: 34%; top: 34%; z-index: 5; }
+.lw-bottom { left: 40%; top: 34%; z-index: 5; }
 .logo-word span {
   display: inline-block;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  filter: drop-shadow(3px 4px 0 rgba(28,28,42,.32)) drop-shadow(0 0 12px rgba(255,255,255,.55));
+  -webkit-text-stroke: 3px rgba(40,40,55,.32);
 }
 .lt-stripe {
   background-image: repeating-linear-gradient(115deg,
@@ -227,20 +207,20 @@
 }
 .lt-solid { background-image: linear-gradient(180deg, #bca8dd 0%, #8f7ab5 100%); }
 .lt-ink   { background-image: linear-gradient(180deg, #43435a 0%, #23232f 100%); }
-/* 字母错落排布 */
-.logo-word span:nth-child(1)  { transform: rotate(-4deg) translateY(-6px); }
-.logo-word span:nth-child(2)  { transform: translateY(4px); }
-.logo-word span:nth-child(3)  { transform: rotate(2deg) translateY(-2px); }
-.logo-word span:nth-child(4)  { transform: translateY(6px) rotate(-2deg); }
-.logo-word span:nth-child(5)  { transform: translateY(-8px); }
-.logo-word span:nth-child(6)  { transform: rotate(3deg) translateY(3px); }
-.logo-word span:nth-child(7)  { transform: translateY(-4px); }
-.logo-word span:nth-child(8)  { transform: translateY(5px) rotate(-3deg); }
+.lt-pixel {
+  background-image: conic-gradient(#9d8ac0 25%, #6a5690 0 50%, #8f7ab5 0 75%, #5a4a7d 0);
+  background-size: 13px 13px;
+}
+/* 字母轻微错落（不破坏字形完整） */
+.logo-word span:nth-child(1) { transform: translateY(-5px); }
+.logo-word span:nth-child(2) { transform: translateY(4px); }
+.logo-word span:nth-child(3) { transform: translateY(-3px); }
+.logo-word span:nth-child(4) { transform: translateY(5px); }
 
 /* 左侧紫色花饰 */
-.logo-floral { left: -1%; top: 4%; width: 118px; z-index: 3; }
+.logo-floral { left: 0%; top: 2%; width: 105px; z-index: 3; }
 /* 右侧剪影小兽 */
-.logo-horse  { right: 3%; top: 30%; width: 230px; z-index: 3; }
+.logo-horse  { right: 3%; top: 40%; width: 230px; z-index: 3; }
 /* 四叶草 & 星光 */
 .logo-clover { right: 1%; top: 6%; width: 46px; z-index: 3; opacity: .85; }
 .logo-spark  { color: #bfe0ea; z-index: 3; text-shadow: 0 0 8px rgba(180,220,240,.9); }
@@ -249,103 +229,44 @@
 .logo-spark.s3 { right: 14%; bottom: 2%; font-size: 18px; color: #cdbfe3; }
 
 .logo-sub {
+  position: relative;
   font-family: "UnifrakturMaguntia", cursive;
   font-size: clamp(12px, 1.6vw, 20px);
   letter-spacing: 6px;
   color: var(--muted);
-  margin-top: 8px;
+  margin-top: 18px;
+  text-align: center;
 }
 
-  .detail-bar {
-    position: sticky;
-    top: 0;
-    background: var(--bg);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 48px;
-    border-bottom: 1px solid var(--line);
-    z-index: 5;
-  }
-  .detail-bar .back {
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    cursor: pointer;
-    color: var(--muted);
-    transition: color .2s;
-  }
-  .detail-bar .back:hover { color: var(--ink); }
-  .detail-bar .navbtns { display: flex; gap: 20px; }
-  .detail-bar .navbtns span {
-    font-size: 12px; letter-spacing: 2px;
-    cursor: pointer; color: var(--muted);
-    text-transform: uppercase;
-  }
-  .detail-bar .navbtns span:hover { color: var(--ink); }
+/* 装饰元素 */
+.deco { position: absolute; pointer-events: none; z-index: 3; }
+.float { animation: floaty 7s ease-in-out infinite; }
+@keyframes floaty { 0%,100% { transform: translateY(0) rotate(var(--r, 0deg)); } 50% { transform: translateY(-10px) rotate(var(--r, 0deg)); } }
 
-  .detail-body {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 50px 32px 120px;
-  }
-  .detail-body h1 {
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    margin-bottom: 6px;
-  }
-  .detail-body .sub {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 36px;
-  }
-  .detail-body .desc {
-    font-size: 14px;
-    line-height: 2;
-    color: #3c3c3c;
-    max-width: 560px;
-    margin-bottom: 44px;
-  }
-  .detail-body figure { margin-bottom: 24px; }
-  .detail-body figure img {
-    width: 100%;
-    display: block;
-    background: #e8e6e1;
-    min-height: 300px;
-    object-fit: cover;
-  }
-  .detail-body figcaption {
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    margin-top: 8px;
-  }
+.cross { color: #9a9a9a; opacity: .8; }
+.cross svg { display: block; }
+.cross.dark { color: #4a4a4a; }
 
-  /* ---------- 关于页 ---------- */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-  .about-text p { font-size: 15px; line-height: 2.1; color: #2e2e2e; margin-bottom: 24px; }
-  .about-text .label {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 36px 0 10px;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 8px;
-  }
-  .about-text ul { list-style: none; font-size: 13px; line-height: 2.4; color: #2e2e2e; }
-  .about-text ul li span { color: var(--muted); margin-right: 12px; font-size: 11px; letter-spacing: 1px; }
-  .about-photo { aspect-ratio: 3/4; overflow: hidden; background: #e8e6e1; }
-  .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(60%); }
+/* 首页照片堆 */
+.photo-pile { position: absolute; z-index: 4; cursor: pointer; }
+.photo-pile img {
+  position: absolute;
+  width: 130px; height: 96px;
+  object-fit: cover;
+  background: #eef0f2;
+  box-shadow: 0 8px 22px rgba(60,60,90,.28);
+  filter: saturate(.75) contrast(1.02);
+  transition: transform .4s ease;
+}
+.photo-pile img:nth-child(1) { transform: rotate(-8deg); }
+.photo-pile img:nth-child(2) { transform: rotate(-2deg) translate(16px, -12px); }
+.photo-pile img:nth-child(3) { transform: rotate(4deg) translate(34px, -24px); }
+.photo-pile:hover img:nth-child(1) { transform: rotate(-12deg) translate(-8px, 4px); }
+.photo-pile:hover img:nth-child(3) { transform: rotate(8deg) translate(42px, -34px); }
+.pile-left  { top: 26%; left: 4%; }
+.pile-left img:nth-child(1) { top: 40px; left: 0; }
+.pile-left img:nth-child(2) { top: 8px;  left: 10px; }
+.pile-left img:nth-child(3) { top: -28px; left: 22px; }
 
 /* 缎带 The Portfolio */
 .ribbon-wrap {
@@ -374,7 +295,6 @@
 .ribbon {
   position: absolute;
   right: -34px; bottom: -20px;
-  background: linear-gradient(180deg, #c8b6e2, #a globals89ccb);
   background: linear-gradient(180deg, #c8b6e2, #a189cb);
   color: #fff;
   font-family: "Pinyon Script", cursive;
@@ -385,85 +305,368 @@
   white-space: nowrap;
 }
 
-  /* ---------- 页脚 ---------- */
-  footer {
-    grid-column: 2;
-    padding: 26px 48px;
-    border-top: 1px solid var(--line);
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
+/* 小圆点 & 线 */
+.dot-bullet {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--ink);
+  vertical-align: middle;
+}
+
+/* ================= 子页面通用 ================= */
+.subpage { padding: 60px clamp(20px, 6vw, 90px) 100px; }
+
+.back-home {
+  position: fixed;
+  top: 22px; left: 24px;
+  z-index: 40;
+  font-family: "Pinyon Script", cursive;
+  font-size: 26px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: color .3s, transform .3s;
+}
+.back-home:hover { color: var(--lav-deep); transform: translateX(-4px); }
+
+.page-title {
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: clamp(38px, 6vw, 72px);
+  margin: 10px 0 30px 44px;
+  position: relative;
+}
+.page-title::before {
+  content: "";
+  position: absolute;
+  left: -40px; top: 24px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+
+/* ---------- Introduction 页 ---------- */
+.intro-stage { position: relative; max-width: 1150px; margin: 0 auto; min-height: 78vh; }
+
+.intro-card {
+  position: relative;
+  width: min(480px, 88vw);
+  margin-top: 6vh;
+  padding: 56px 40px 40px;
+  background: linear-gradient(160deg, rgba(220,238,233,.92), rgba(240,215,232,.85));
+  box-shadow: 0 20px 50px rgba(100,90,140,.18);
+  transform: rotate(-1.2deg);
+  z-index: 4;
+}
+.intro-card .polka {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,.9) 7px, transparent 8px),
+                    radial-gradient(circle, rgba(186,160,220,.35) 7px, transparent 8px);
+  background-size: 90px 90px, 90px 90px;
+  background-position: 0 0, 45px 45px;
+  opacity: .5;
+  pointer-events: none;
+}
+.intro-card p {
+  position: relative;
+  font-size: 16px;
+  line-height: 2.15;
+  color: #2c2c2c;
+  margin-bottom: 22px;
+}
+
+.intro-portrait {
+  position: absolute;
+  right: 0; top: -4%;
+  width: min(460px, 44vw);
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: 0 24px 60px rgba(90,90,130,.25);
+}
+.intro-portrait img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: saturate(.7) contrast(1.02) brightness(1.05);
+}
+.intro-portrait::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(200deg, rgba(190,225,238,.55), rgba(200,180,225,.4) 60%, transparent);
+  mix-blend-mode: screen;
+}
+
+.intro-logo {
+  position: absolute;
+  right: 8%;
+  top: 34%;
+  font-family: "Pinyon Script", cursive;
+  font-size: clamp(60px, 9vw, 120px);
+  z-index: 5;
+  background: linear-gradient(100deg, #8fb0d6, #c4ade4 45%, #6f92c4);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent;
+  filter: drop-shadow(2px 3px 0 rgba(30,30,50,.25));
+  pointer-events: none;
+}
+.intro-flower {
+  position: absolute;
+  right: 4%; bottom: 6%;
+  width: 150px;
+  opacity: .85;
+  z-index: 5;
+}
+
+.intro-footlink {
+  position: relative;
+  margin-top: 8vh;
+  font-size: 15px;
+  z-index: 4;
+}
+.intro-footlink a {
+  color: var(--ink);
+  border-bottom: 1px solid var(--ink);
+  cursor: pointer;
+  transition: color .3s, border-color .3s;
+}
+.intro-footlink a:hover { color: var(--lav-deep); border-color: var(--lav-deep); }
+
+/* ---------- 画廊页（分类作品） ---------- */
+.gallery-strip {
+  display: flex;
+  gap: clamp(14px, 2.5vw, 34px);
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin: 8vh 0 10vh;
+}
+.figure-cut {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(120px, 13vw, 175px);
+  cursor: pointer;
+  transition: transform .45s cubic-bezier(.2,.8,.2,1);
+}
+.figure-cut:hover { transform: translateY(-14px) scale(1.04); z-index: 3; }
+.figure-cut img {
+  width: 100%;
+  aspect-ratio: 3 / 5;
+  object-fit: cover;
+  background: #eef0f2;
+  clip-path: polygon(6% 0, 94% 2%, 100% 96%, 92% 100%, 4% 98%, 0 92%);
+  filter: saturate(.72) contrast(1.05);
+  box-shadow: 0 16px 34px rgba(80,80,110,.3);
+}
+.figure-cut figcaption {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #555;
+  letter-spacing: 1px;
+}
+.gallery-note {
+  max-width: 620px;
+  margin: 0 auto;
+  font-size: 14.5px;
+  line-height: 2.1;
+  color: #3a3a3a;
+}
+
+/* 分割线 + 联系方式 */
+.contact-block { margin: 10vh auto 0; max-width: 860px; }
+.contact-line { border: none; border-top: 1px solid #9a9a9a; margin-bottom: 7vh; }
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 7vh;
+  font-size: clamp(20px, 3vw, 30px);
+}
+.contact-row a {
+  color: var(--ink);
+  border-bottom: 2px solid var(--ink);
+  letter-spacing: 1px;
+  transition: color .3s, border-color .3s;
+}
+.contact-row a:hover { color: var(--lav-deep); border-color: var(--lav-deep); }
+.contact-row svg { flex: 0 0 auto; }
+
+/* ---------- It's me 页 ---------- */
+.itsme-stage { position: relative; max-width: 1100px; margin: 0 auto; min-height: 80vh; }
+
+.itsme-card {
+  position: relative;
+  width: min(560px, 92vw);
+  margin-left: 8%;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(90,90,120,.22);
+  padding: 26px;
+  display: grid;
+  grid-template-columns: 1.2fr .9fr;
+  gap: 20px;
+  z-index: 4;
+}
+.itsme-card .pic {
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  object-fit: cover;
+  background: #eef0f2;
+  filter: saturate(.8);
+  grid-row: span 2;
+}
+.itsme-card .pic.small {
+  grid-row: auto;
+  aspect-ratio: 4 / 3;
+}
+.moji {
+  font-family: "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.7;
+  color: #222;
+  word-break: break-all;
+  opacity: .85;
+}
+
+.itsme-title {
+  position: absolute;
+  left: 44%;
+  bottom: 4%;
+  font-family: "Monsieur La Doulaise", cursive;
+  font-size: clamp(44px, 7vw, 84px);
+  z-index: 5;
+  text-shadow: 1px 1px 0 rgba(140,120,180,.2);
+}
+.itsme-cross1 { position: absolute; left: 38%; top: 6%; width: 130px; z-index: 6; opacity: .9; }
+.itsme-cross2 { position: absolute; left: 82%; top: 20%; width: 120px; z-index: 6; }
+.itsme-ghost {
+  position: absolute;
+  right: 0; bottom: -6%;
+  width: min(420px, 40vw);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  opacity: .4;
+  filter: saturate(.5) brightness(1.1);
+  z-index: 1;
+  mask-image: linear-gradient(210deg, transparent 30%, #000 70%);
+  -webkit-mask-image: linear-gradient(210deg, transparent 30%, #000 70%);
+}
+
+/* ---------- Photography 页（缓慢滚动） ---------- */
+.photo-columns {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1fr;
+  gap: 0;
+  background: rgba(253,253,253,.92);
+}
+.pcol { overflow: hidden; position: relative; padding: 0 10px; }
+.pcol-track { display: flex; flex-direction: column; gap: 14px; will-change: transform; }
+.pcol-track img {
+  width: 100%;
+  object-fit: cover;
+  background: #e9ecef;
+  cursor: pointer;
+  filter: saturate(.8) contrast(1.03);
+  transition: filter .3s;
+  display: block;
+}
+.pcol-track img:hover { filter: saturate(1) contrast(1.05); }
+
+.pcol.down .pcol-track { animation: scrollDown 80s linear infinite; }
+.pcol.up   .pcol-track { animation: scrollUp   95s linear infinite; }
+.pcol.down.slow .pcol-track { animation-duration: 110s; }
+@keyframes scrollDown { from { transform: translateY(0); } to { transform: translateY(-50%); } }
+@keyframes scrollUp   { from { transform: translateY(-50%); } to { transform: translateY(0); } }
+.photo-columns:hover .pcol-track { animation-play-state: paused; }
+
+.pcol.center-col { background: rgba(255,255,255,.75); box-shadow: inset 0 0 0 1px rgba(0,0,0,.04); }
+
+.photo-flower {
+  position: absolute;
+  left: 33%; bottom: 8%;
+  width: 170px;
+  z-index: 5;
+  opacity: .9;
+  pointer-events: none;
+}
+
+/* 灯箱 */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(253,253,253,.96);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.lightbox.open { display: flex; animation: pageIn .4s ease both; }
+.lightbox img {
+  max-width: min(70vw, 760px);
+  max-height: 82vh;
+  object-fit: contain;
+  background: #f4f2ef;
+  box-shadow: 0 24px 70px rgba(80,80,110,.3);
+}
+.lb-btn {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #666;
+  font-size: 26px;
+  padding: 14px;
+  transition: color .3s, transform .3s;
+  font-family: serif;
+}
+.lb-btn:hover { color: #111; transform: scale(1.15); }
+.lb-close { top: 16px; right: 26px; font-size: 22px; }
+.lb-prev { left: 3%; top: 50%; transform: translateY(-50%); }
+.lb-next { right: 3%; top: 50%; transform: translateY(-50%); }
+
+/* ================= 响应式 ================= */
+@media (max-width: 860px) {
+  .menu-word { position: static; display: block; text-align: center; margin: 14px auto; }
+  .home-menu {
+    position: relative;
+    z-index: 6;
+    padding-top: 18vh;
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 6px;
   }
-
-  /* ---------- 自定义光标点 ---------- */
-  .cursor-dot {
-    position: fixed;
-    width: 8px; height: 8px;
-    background: #111;
-    border-radius: 50%;
-    pointer-events: none;
-    z-index: 100;
-    transform: translate(-50%, -50%);
-    transition: width .2s, height .2s, opacity .2s;
-    mix-blend-mode: difference;
-  }
-  body.has-cursor .cursor-dot { opacity: 1; }
-
-  /* ---------- 移动端 ---------- */
-  .menu-toggle { display: none; }
-  @media (max-width: 860px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar {
-      width: 100%;
-      bottom: auto;
-      transform: translateY(-100%);
-      transition: transform .35s ease;
-      border-bottom: 1px solid var(--line);
-      padding: 24px 24px 28px;
-    }
-    .sidebar.open { transform: translateY(0); box-shadow: 0 12px 30px rgba(0,0,0,.08); }
-    .site-sub { margin-bottom: 24px; }
-    .sidebar-bottom { margin-top: 24px; }
-    .menu-toggle {
-      display: block;
-      position: fixed;
-      top: 18px; right: 20px;
-      z-index: 30;
-      background: none;
-      border: none;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      color: var(--ink);
-    }
-    body.menu-open .menu-toggle { color: var(--muted); }
-    .content { padding: 90px 24px 90px; }
-    .grid { grid-template-columns: repeat(2, 1fr); gap: 20px 16px; }
-    .detail-bar { padding: 16px 24px; }
-    .detail-body { padding: 36px 24px 90px; }
-    .about-grid { grid-template-columns: 1fr; }
-    footer { grid-column: 1; padding: 22px 24px; }
-  }
-  @media (max-width: 520px) {
-    .grid { grid-template-columns: 1fr; }
-  }
+  .logo-wrap { position: relative; top: auto; left: auto; transform: none; margin: 40px auto 10px; }
+  .logo-wrap:hover { transform: scale(1.03); }
+  .photo-pile, .ribbon-wrap, .deco.cross { display: none; }
+  .intro-portrait { position: relative; width: 80%; margin: 40px auto 0; top: 0; }
+  .intro-logo { right: 10%; top: 6%; }
+  .itsme-card { margin: 0 auto; grid-template-columns: 1fr; }
+  .itsme-cross1, .itsme-cross2 { display: none; }
+  .photo-columns { grid-template-columns: 1fr; }
+  .pcol.up, .pcol.down.slow { display: none; }
+  .subpage { padding-top: 90px; }
+}
 </style>
 </head>
 <body>
 
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="tip">← → 方向键翻页 · 点击页面或按钮交互</div>
+<!-- 背景层 -->
+<div class="bg">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+  <div class="blob b4"></div>
+  <div id="glitch"></div>
+  <div class="halftone" style="position:absolute; left:30%; top:6%; width:44%; height:70%; opacity:.5; mask-image:radial-gradient(ellipse at center, #000 30%, transparent 70%); -webkit-mask-image:radial-gradient(ellipse at center, #000 30%, transparent 70%);"></div>
+</div>
 
-<div class="layout">
+<div class="back-home" id="backHome" onclick="go('home')" style="display:none">‹ home</div>
 
 <!-- ================= 首页 ================= -->
 <section class="page active" id="page-home">
   <div class="home-menu">
-    <span class="menu-word underlined m-rtw"   onclick="go('cat', 'rtw')">Ready-to-wear</span>
+    <span class="menu-word m-rtw"   onclick="go('cat', 'rtw')">Ready-to-wear</span>
     <span class="menu-word m-under" onclick="go('cat', 'under')">Underwear</span>
     <span class="menu-word m-acc"   onclick="go('cat', 'acc')">Accessories</span>
     <span class="menu-word m-fonts" onclick="go('cat', 'font')">Fonts art</span>
@@ -476,6 +679,9 @@
     <div class="logo-scene">
       <div class="logo-halftone"></div>
       <div class="logo-glitch" id="logoGlitch"></div>
+      <div class="logo-digital" id="logoDigits"></div>
+      <div class="logo-pixels"></div>
+      <div class="logo-scan"></div>
 
       <!-- 左侧紫色花饰 -->
       <svg class="logo-floral" viewBox="0 0 100 180">
@@ -527,276 +733,291 @@
       <span class="logo-spark s2">✦</span>
       <span class="logo-spark s3">✦</span>
 
-      <!-- 分层花体字 -->
-      <div class="logo-word">
-        <span class="lt-stripe">F</span><span class="lt-dot">u</span><span class="lt-stripe">u</span><span class="lt-solid">u</span><span class="lt-ink">u</span><span class="lt-stripe">2</span><span class="lt-dot">u</span><span class="lt-stripe">i</span><span class="lt-ink">1</span>
+      <!-- 分层花体字：Fuuu 上层 / 2ui1 下层，叠压 -->
+      <div class="logo-word lw-top">
+        <span class="lt-stripe">F</span><span class="lt-dot">u</span><span class="lt-pixel">u</span><span class="lt-solid">u</span>
+      </div>
+      <div class="logo-word lw-bottom">
+        <span class="lt-ink">2</span><span class="lt-stripe">u</span><span class="lt-dot">i</span><span class="lt-pixel">1</span>
       </div>
     </div>
     <div class="logo-sub">FASHION &amp; VISUAL ARCHIVE</div>
   </div>
 
-    <div class="sidebar-bottom">
-      <a href="mailto:hello@example.com">hello@example.com</a><br>
-      <a href="#" onclick="return false">Instagram</a> ·
-      <a href="#" onclick="return false">Weibo</a><br>
-      上海 / Shanghai
+  <!-- 左侧照片堆 → Ready-to-wear -->
+  <div class="photo-pile pile-left" onclick="go('cat','rtw')">
+    <img src="https://picsum.photos/seed/pileA/260/200" alt="" loading="lazy" />
+    <img src="https://picsum.photos/seed/pileB/260/200" alt="" loading="lazy" />
+    <img src="https://picsum.photos/seed/pileC/260/200" alt="" loading="lazy" />
+  </div>
+
+  <!-- 缎带 The Portfolio -->
+  <div class="ribbon-wrap" onclick="go('cat','all')">
+    <div class="paper-stack">
+      <i></i><i></i>
+      <img src="https://picsum.photos/seed/paper1/220/160" alt="" loading="lazy" />
     </div>
-  </aside>
-  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">Menu</button>
+    <div class="ribbon">The Portfolio</div>
+  </div>
 
-  <!-- ===== 内容 ===== -->
-  <main class="content">
+  <!-- 装饰十字 -->
+  <div class="deco cross float" style="left:15%; bottom:22%; --r:-6deg;" data-cross></div>
+  <div class="deco cross dark float" style="right:9%; top:26%; --r:8deg; animation-delay:-3s;" data-cross></div>
+  <div class="deco cross float" style="left:30%; top:14%; width:60px; --r:4deg; animation-delay:-5s;" data-cross></div>
 
-    <!-- 全部 / 分类 共用 -->
-    <section class="view active" id="view-works">
-      <div class="view-head">
-        <h1 id="worksTitle">全部作品</h1>
-        <div class="meta" id="worksMeta"></div>
-      </div>
-      <div class="grid" id="grid"></div>
-    </section>
+  <!-- 装饰花纹 -->
+  <svg class="deco float" style="left:24%; top:34%; width:110px; opacity:.75; --r:-4deg;" viewBox="0 0 100 140">
+    <path d="M50 10 C58 30 66 36 66 52 C66 66 56 72 50 84 C44 72 34 66 34 52 C34 36 42 30 50 10 Z M50 84 C50 100 42 108 30 112 C42 118 46 126 50 136 C54 126 58 118 70 112 C58 108 50 100 50 84 Z" fill="#7f6aa8"/>
+    <circle cx="50" cy="52" r="7" fill="#e9e2f4"/>
+    <circle cx="50" cy="118" r="5" fill="#e9e2f4"/>
+  </svg>
+</section>
 
-    <!-- 关于 -->
-    <section class="view" id="view-about">
-      <div class="view-head">
-        <h1>关于 About</h1>
-        <div class="meta">EST. 2020</div>
-      </div>
-      <div class="about-grid">
-        <div class="about-text">
-          <p>你好，我是一名时装与视觉设计师，作品横跨成衣、针织、配饰、字体实验与摄影。我相信不同媒介之间可以互相渗透——一块面料、一个字形、一张照片，都可能是同一种表达的不同切面。</p>
-          <p>工作方法偏概念驱动：先建立叙事框架，再回到材质、剪裁与排印的细节里反复打磨。我喜欢"未完成感"，它让作品保留呼吸的空间。</p>
-          <div class="label">经历 Experience</div>
-          <ul>
-            <li><span>2024 —</span>独立工作室主理人</li>
-            <li><span>2022 — 24</span>某设计工作室 · 时装设计师</li>
-            <li><span>2020 — 22</span>某品牌 · 助理设计师</li>
-          </ul>
-          <div class="label">服务 Services</div>
-          <ul>
-            <li><span>01</span>成衣 / 针织系列设计</li>
-            <li><span>02</span>品牌视觉与排印</li>
-            <li><span>03</span>艺术指导与摄影</li>
-          </ul>
-        </div>
-        <div class="about-photo">
-          <img src="https://picsum.photos/seed/atelier9/800/1060" alt="工作室" loading="lazy" />
-        </div>
-      </div>
-    </section>
+<!-- ================= Introduction ================= -->
+<section class="page subpage" id="page-intro">
+  <div class="intro-stage">
+    <h1 class="page-title script" style="margin-left:0;">Introduction</h1>
+    <span class="dot-bullet" style="position:absolute; left:-70px; top:40px;"></span>
 
-    <!-- 联系 -->
-    <section class="view" id="view-contact">
-      <div class="view-head">
-        <h1>联系 Contact</h1>
-        <div class="meta">欢迎合作与咨询</div>
-      </div>
-      <div class="contact-list">
-        <a href="mailto:hello@example.com">hello@example.com <small>EMAIL · 项目合作</small></a>
-        <a href="#" onclick="return false">Instagram <small>日常与过程记录</small></a>
-        <a href="#" onclick="return false">Weibo <small>中文内容更新</small></a>
-        <a href="#" onclick="return false">WeChat <small>工作微信 · 请注明来意</small></a>
-      </div>
-    </section>
+    <div class="intro-portrait">
+      <img src="https://picsum.photos/seed/portraitMe/760/1000" alt="portrait" loading="lazy" />
+    </div>
+    <div class="intro-logo">MeDicI</div>
 
-  </main>
+    <svg class="intro-flower" viewBox="0 0 120 120">
+      <g fill="none" stroke="#8f7ab5" stroke-width="3">
+        <path d="M60 10 C75 35 95 40 95 62 C95 82 78 90 60 110 C42 90 25 82 25 62 C25 40 45 35 60 10 Z"/>
+        <path d="M60 30 C68 46 80 50 80 64 C80 76 70 82 60 94 C50 82 40 76 40 64 C40 50 52 46 60 30 Z" stroke="#a9c4d8"/>
+      </g>
+      <circle cx="60" cy="64" r="8" fill="#b9a7d8"/>
+    </svg>
 
-  <footer>
-    <span>© 2026 Medici Style</span>
-    <span>Designed with care</span>
-  </footer>
-</div>
+    <div class="intro-card">
+      <div class="polka"></div>
+      <p>你好，这里是 MeDicI 的作品档案。<br>你可以叫我小美。</p>
+      <p>目前是一名时装设计师与视觉创作者。在学校主修服装设计，以内衣与贴身衣物为中心进行学习。借着这段经历，一直在思考服装、身体、设计与边界、时尚与社会之间的关系。</p>
+      <p>从自己的经历与日常出发，把简单的东西拎出来，以独立的视角去追求设计。想在通过设计与社会过分亲密这件事上，保持一点自己冷静的距离感。</p>
+    </div>
 
-<!-- ===== 作品详情 ===== -->
-<div class="detail" id="detail">
-  <div class="detail-bar">
-    <span class="back" onclick="closeDetail()">← Back 返回</span>
-    <div class="navbtns">
-      <span onclick="stepDetail(-1)">Prev</span>
-      <span onclick="stepDetail(1)">Next</span>
+    <div class="intro-footlink">
+      请多关照　<a onclick="go('itsme')">→ It's me</a>
     </div>
   </div>
-  <div class="detail-body" id="detailBody"></div>
+</section>
+
+<!-- ================= 分类画廊（动态填充） ================= -->
+<section class="page subpage" id="page-cat">
+  <h1 class="page-title script" id="catTitle">Gallery</h1>
+  <div class="gallery-strip" id="catStrip"></div>
+  <p class="gallery-note" id="catNote"></p>
+
+  <div class="contact-block">
+    <hr class="contact-line" />
+    <div class="contact-row">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.6">
+        <rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="#1a1a1a" stroke="none"/>
+      </svg>
+      <a href="#" onclick="return false">@MEDICIIIIIII_</a>
+    </div>
+    <div class="contact-row">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#1a1a1a" stroke-width="1.6">
+        <rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 6.5 L12 13 L21 6.5"/>
+      </svg>
+      <a href="mailto:kimmedici326@gmail.com">kimmedici326@gmail.com</a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= It's me ================= -->
+<section class="page subpage" id="page-itsme">
+  <div class="itsme-stage">
+    <div class="itsme-card">
+      <img class="pic" src="https://picsum.photos/seed/itsmeA/700/620" alt="" loading="lazy" />
+      <div class="moji" id="mojiBlock"></div>
+      <img class="pic small" src="https://picsum.photos/seed/itsmeB/500/380" alt="" loading="lazy" />
+    </div>
+
+    <div class="itsme-cross1" data-cross></div>
+    <div class="itsme-cross2" data-cross></div>
+    <img class="itsme-ghost" src="https://picsum.photos/seed/portraitMe/700/940" alt="" loading="lazy" />
+    <div class="itsme-title">It's me</div>
+  </div>
+</section>
+
+<!-- ================= Photography（缓慢滚动） ================= -->
+<section class="page" id="page-photo">
+  <div class="photo-columns">
+    <div class="pcol down"><div class="pcol-track" id="colA"></div></div>
+    <div class="pcol up center-col"><div class="pcol-track" id="colB"></div></div>
+    <div class="pcol down slow"><div class="pcol-track" id="colC"></div></div>
+  </div>
+
+  <svg class="photo-flower" viewBox="0 0 120 120">
+    <g fill="none" stroke="#8f7ab5" stroke-width="2.6">
+      <circle cx="60" cy="60" r="10"/>
+      <path d="M60 50 C52 30 60 18 60 18 C60 18 68 30 60 50 Z M60 70 C52 90 60 102 60 102 C60 102 68 90 60 70 Z M50 60 C30 52 18 60 18 60 C18 60 30 68 50 60 Z M70 60 C90 52 102 60 102 60 C102 60 90 68 70 60 Z"/>
+      <path d="M53 53 C42 42 38 32 38 32 C38 32 48 36 59 47 Z M67 67 C78 78 82 88 82 88 C82 88 72 84 61 73 Z" stroke="#a9c4d8"/>
+    </g>
+  </svg>
+</section>
+
+<!-- 灯箱 -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-btn lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-btn lb-prev" onclick="stepLb(-1)">‹</button>
+  <img id="lbImg" src="" alt="" />
+  <button class="lb-btn lb-next" onclick="stepLb(1)">›</button>
 </div>
 
 <script>
-  /* ---------------- 数据 ---------------- */
-  const CAT_NAMES = {
-    rtw:  "Ready-to-wear 成衣",
-    knit: "Knitwear 针织",
-    acc:  "Accessories 配饰",
-    font: "Font Art 字体艺术",
-    photo:"Photography 摄影",
-    other:"Others 其他"
-  };
+/* ================= 数据 ================= */
+const CATS = {
+  all:   { title: "The Portfolio", note: "全部作品的集成：成衣、针织、配饰、字体艺术与摄影的档案合集。", seeds: ["pr1","pr2","pr3","pr4","pr5","pr6","pr7","pr8"] },
+  rtw:   { title: "Ready-to-wear", note: "以单一面料与重复工艺构成的成衣系列。探索覆盖与显露、平面与立体之间的平衡。", seeds: ["rtw1","rtw2","rtw3","rtw4","rtw5","rtw6","rtw7"] },
+  under: { title: "Underwear",     note: "以贴身衣物为中心的实验：柔软的面料、松散的结构，以及贴近身体的剪裁研究。", seeds: ["und1","und2","und3","und4","und5"] },
+  acc:   { title: "Accessories",   note: "金属丝编织与皮革边角料的再利用计划。硬质材料呈现出织物的柔软错觉。", seeds: ["acc1","acc2","acc3","acc4","acc5","acc6"] },
+  font:  { title: "Fonts art",     note: "排印实验：文字既是内容也是纹理，被反复放大、复制与磨损，直到接近图像。", seeds: ["fnt1","fnt2","fnt3","fnt4","fnt5"] },
+  other: { title: "Others",        note: "过程资料的整理：未采用的草稿、试衣间的废片与工作台的一角。", seeds: ["oth1","oth2","oth3","oth4","oth5"] },
+};
 
-  const WORKS = [
-    { id:1,  title:"褶皱研究 No.3", cat:"rtw",  year:"2026", seed:"fashion12",
-      desc:"以单一面料、多种褶皱工艺构成的胶囊系列。通过折叠与热定型让平面布料产生建筑般的立体结构，探索「覆盖」与「显露」之间的平衡。" },
-    { id:2,  title:"未完成的剪裁", cat:"rtw",  year:"2025", seed:"fashion27",
-      desc:"一系列刻意保留毛边与外露缝线的成衣。让制作过程的痕迹成为设计语言的一部分，质疑「完成」的边界。" },
-    { id:3,  title:"灰色变奏", cat:"rtw",  year:"2025", seed:"fashion33",
-      desc:"由七种不同深浅的灰色组成的系列，弱化色彩干扰，把注意力交给廓形与面料的肌理变化。" },
-    { id:4,  title:"手织档案", cat:"knit", year:"2026", seed:"knit08",
-      desc:"使用家用编织机完成的实验性针织作品，将传统纹样拆解成像素化的色块，重新编织成可穿着的「图像」。" },
-    { id:5,  title:"松散结构", cat:"knit", year:"2024", seed:"knit21",
-      desc:"探索脱散、镂空与失败针法的偶然美感。每一件都不可复制，织错的地方被保留下来。" },
-    { id:6,  title:"金属编织胸饰", cat:"acc",  year:"2025", seed:"acc05",
-      desc:"以细金属丝手工编织的胸饰系列，硬质材料呈现出织物的柔软错觉。" },
-    { id:7,  title:"皮革小物", cat:"acc",  year:"2024", seed:"acc17",
-      desc:"边角料的再利用计划：将制衣剩余的皮革碎片拼接为包袋与小配饰。" },
-    { id:8,  title:"字模标本", cat:"font", year:"2026", seed:"font02",
-      desc:"一套基于活字印刷的实验字体，将笔画拆解后重新组装，探索「可读性的最低限度」。" },
-    { id:9,  title:"噪点海报系列", cat:"font", year:"2025", seed:"font19",
-      desc:"为虚构展览设计的排印海报。文字既是内容也是纹理，被反复放大、复制与磨损。" },
-    { id:10, title:"街头即景", cat:"photo", year:"2026", seed:"photo11",
-      desc:"用一台老旧胶片机记录城市里的偶然瞬间：反光、影子、路人的姿态。" },
-    { id:11, title:"布料静物", cat:"photo", year:"2025", seed:"photo24",
-      desc:"将面料悬挂、堆叠与打光，拍摄一组没有人物的「时装照片」。" },
-    { id:12, title:"手稿与废片", cat:"other", year:"2025", seed:"misc07",
-      desc:"过程资料的整理：未采用的草稿、试衣间的废片与工作台的一角。" },
-  ];
+/* ================= 路由 ================= */
+let currentPage = "home";
+const backBtn = document.getElementById("backHome");
 
-  const CAT_LABELS = Object.entries(CAT_NAMES);
+function go(name, cat) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  const target = document.getElementById("page-" + name);
+  target.classList.add("active");
+  target.style.animation = "none";
+  void target.offsetHeight;
+  target.style.animation = "";
 
-  /* ---------------- 状态与渲染 ---------------- */
-  let currentView = "works";
-  let currentCat  = null;
-  let currentId   = null;
+  currentPage = name;
+  backBtn.style.display = name === "home" ? "none" : "block";
+  closeLb();
+  if (name === "cat") renderCat(cat || "all");
+  if (name === "photo") buildPhotoCols();
+  window.scrollTo({ top: 0 });
+}
 
-  const grid      = document.getElementById("grid");
-  const worksTitle= document.getElementById("worksTitle");
-  const worksMeta = document.getElementById("worksMeta");
+/* ================= 分类画廊渲染 ================= */
+let catStripImages = [];
 
-  function filtered() {
-    return currentCat ? WORKS.filter(w => w.cat === currentCat) : WORKS;
+function renderCat(key) {
+  const cat = CATS[key];
+  document.getElementById("catTitle").textContent = cat.title;
+  document.getElementById("catNote").textContent = cat.note;
+  document.getElementById("catStrip").innerHTML = cat.seeds.map((s, i) => `
+    <figure class="figure-cut" onclick="openLb('https://picsum.photos/seed/${s}/900/1300', ${i})">
+      <img src="https://picsum.photos/seed/${s}/460/760" alt="" loading="lazy" />
+      <figcaption>${String(i + 1).padStart(2, "0")} · ${s.toUpperCase()}</figcaption>
+    </figure>
+  `).join("");
+  catStripImages = cat.seeds.map(s => `https://picsum.photos/seed/${s}/900/1300`);
+}
+
+/* ================= Photography 三列缓慢滚动 ================= */
+function buildPhotoCols() {
+  const mk = (seeds, w, h) => seeds.map(s =>
+    `<img src="https://picsum.photos/seed/${s}/${w}/${h}" style="height:${h * 0.9}px" loading="lazy"
+          onclick="openLb('https://picsum.photos/seed/${s}/900/1200')" alt="" />`
+  ).join("");
+
+  const a = ["pa1","pa2","pa3","pa4","pa5","pa6"];
+  const b = ["pb1","pb2","pb3","pb4","pb5"];
+  const c = ["pc1","pc2","pc3","pc4","pc5","pc6"];
+  document.getElementById("colA").innerHTML = mk(a, 300, 400) + mk(a, 300, 400);
+  document.getElementById("colB").innerHTML = mk(b, 420, 520) + mk(b, 420, 520);
+  document.getElementById("colC").innerHTML = mk(c, 300, 380) + mk(c, 300, 380);
+}
+
+/* ================= 灯箱 ================= */
+let lbIndex = 0;
+let lbList = [];
+
+function openLb(src, idx) {
+  lbList = (currentPage === "cat" && catStripImages.length) ? catStripImages : collectPhotoSrcs();
+  lbIndex = idx !== undefined ? idx : Math.max(0, lbList.indexOf(src));
+  document.getElementById("lbImg").src = lbList[lbIndex] || src;
+  document.getElementById("lightbox").classList.add("open");
+}
+function collectPhotoSrcs() {
+  return [...document.querySelectorAll(".pcol-track img")].map(i => i.src);
+}
+function stepLb(d) {
+  if (!lbList.length) return;
+  lbIndex = (lbIndex + d + lbList.length) % lbList.length;
+  document.getElementById("lbImg").src = lbList[lbIndex];
+}
+function closeLb() { document.getElementById("lightbox").classList.remove("open"); }
+
+document.addEventListener("keydown", e => {
+  if (document.getElementById("lightbox").classList.contains("open")) {
+    if (e.key === "Escape") closeLb();
+    if (e.key === "ArrowRight") stepLb(1);
+    if (e.key === "ArrowLeft") stepLb(-1);
+  } else if (e.key === "Escape" && currentPage !== "home") {
+    go("home");
   }
+});
 
-  function renderGrid() {
-    const list = filtered();
-    worksTitle.textContent = currentCat ? CAT_NAMES[currentCat] : "全部作品";
-    worksMeta.textContent  = list.length + " 项 / " +
-      (currentCat ? "CATEGORY" : "SELECTED WORKS · 2024 — 2026");
+/* ================= 哥特十字装饰 ================= */
+const CROSS_SVG = `
+<svg viewBox="0 0 100 160" width="100%" fill="currentColor">
+  <path d="M50 0 C54 16 54 26 54 36 L58 40 L72 36 C66 44 62 48 60 54 L54 56 L54 96 C58 104 64 110 74 116 L58 112 L52 116 L52 148 C56 152 60 155 66 160 L50 154 L34 160 C40 155 44 152 48 148 L48 116 L42 112 L26 116 C36 110 42 104 46 96 L46 56 L40 54 C38 48 34 44 28 36 L42 40 L46 36 C46 26 46 16 50 0 Z"/>
+</svg>`;
+document.querySelectorAll("[data-cross]").forEach(el => {
+  el.innerHTML = CROSS_SVG;
+  if (!el.style.width) el.style.width = Math.random() > .5 ? "110px" : "80px";
+});
 
-    grid.innerHTML = list.map((w, i) => `
-      <div class="work" onclick="openDetail(${w.id})">
-        <div class="thumb">
-          <img src="https://picsum.photos/seed/${w.seed}/640/860" alt="${w.title}"
-               loading="lazy" onload="this.classList.add('loaded')" />
-          <span class="index">${String(i + 1).padStart(2, "0")}</span>
-        </div>
-        <div class="caption">
-          <span>${w.title}</span>
-          <span class="cat">${CAT_NAMES[w.cat].split(" ")[0]} · ${w.year}</span>
-        </div>
-      </div>
-    `).join("");
-
-    // 侧栏计数
-    document.getElementById("countAll").textContent = WORKS.length;
-  }
-
-  function renderNav() {
-    document.querySelectorAll("#nav a").forEach(a => {
-      const isWorks = a.dataset.view === "works";
-      const isCat   = a.dataset.view === "cat" && a.dataset.cat === currentCat;
-      const isPage  = (a.dataset.view === "about" && currentView === "about") ||
-                      (a.dataset.view === "contact" && currentView === "contact");
-      a.classList.toggle("active", (isWorks && !currentCat && (currentView === "works")) || isCat || isPage);
-    });
-  }
-
-  function showView(name, cat = null) {
-    currentView = name;
-    currentCat  = (name === "works") ? cat : null;
-
-    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-    document.getElementById("view-" + name).classList.add("active");
-
-    if (name === "works") renderGrid();
-    renderNav();
-    closeMenu();
-    window.scrollTo({ top: 0 });
-    closeDetail(true);
-  }
-
-  /* ---------------- 详情 ---------------- */
-  const detail     = document.getElementById("detail");
-  const detailBody = document.getElementById("detailBody");
-
-  function openDetail(id) {
-    currentId = id;
-    const w = WORKS.find(x => x.id === id);
-    detailBody.innerHTML = `
-      <h1>${w.title}</h1>
-      <div class="sub">${CAT_NAMES[w.cat]} · ${w.year} · WORK ${String(w.id).padStart(2, "0")}/${WORKS.length}</div>
-      <p class="desc">${w.desc}</p>
-      <figure>
-        <img src="https://picsum.photos/seed/${w.seed}/1200/800" alt="${w.title} 01" />
-        <figcaption>Fig. 01 — Overview</figcaption>
-      </figure>
-      <figure>
-        <img src="https://picsum.photos/seed/${w.seed}b/1200/800" alt="${w.title} 02" />
-        <figcaption>Fig. 02 — Detail</figcaption>
-      </figure>
-      <figure>
-        <img src="https://picsum.photos/seed/${w.seed}c/1200/800" alt="${w.title} 03" />
-        <figcaption>Fig. 03 — Process</figcaption>
-      </figure>
-    `;
-    detail.classList.add("open");
-    document.body.style.overflow = "hidden";
-    detail.scrollTop = 0;
-  }
-
-  function stepDetail(dir) {
-    const idx = WORKS.findIndex(x => x.id === currentId);
-    const next = WORKS[(idx + dir + WORKS.length) % WORKS.length];
-    openDetail(next.id);
-  }
-
-  function closeDetail(silent) {
-    detail.classList.remove("open");
-    document.body.style.overflow = "";
-    if (!silent) currentId = null;
-  }
-
-  /* ---------------- 导航事件 ---------------- */
-  document.querySelectorAll("#nav a").forEach(a => {
-    a.addEventListener("click", () => {
-      if (a.dataset.view === "cat") showView("works", a.dataset.cat);
-      else showView(a.dataset.view);
-    });
-  });
-
-  function toggleMenu() {
-    document.getElementById("sidebar").classList.toggle("open");
-    document.body.classList.toggle("menu-open");
+/* ================= ASCII 故障纹理 / 数字雨 ================= */
+(function makeTextures() {
+  const chars = "01lI|.,:;'`-_~=+*^\"TXKQO0CJEL{}[]()";
+  let out = "";
+  for (let r = 0; r < 46; r++) {
+    let line = "";
+    for (let c = 0; c < 110; c++) {
+      line += Math.random() < .55 ? " " : chars[Math.floor(Math.random() * chars.length)];
+    }
+    out += line + "\n";
   }
   document.getElementById("glitch").textContent = out;
+
+  // LOGO 区域的局部故障纹理
+  let lg = "";
+  for (let r = 0; r < 24; r++) {
+    let line = "";
+    for (let c = 0; c < 70; c++) {
+      line += Math.random() < .6 ? " " : chars[Math.floor(Math.random() * chars.length)];
+    }
+    lg += line + "\n";
+  }
+  document.getElementById("logoGlitch").textContent = lg;
+
+  // LOGO 区域的二进制数字雨
+  let bin = "";
+  for (let r = 0; r < 28; r++) {
+    let line = "";
+    for (let c = 0; c < 64; c++) {
+      line += Math.random() < .35 ? (Math.random() < .5 ? "0" : "1") : " ";
+    }
+    bin += line + "\n";
+  }
+  document.getElementById("logoDigits").textContent = bin;
 })();
 
-  /* ---------------- 键盘 ---------------- */
-  document.addEventListener("keydown", e => {
-    if (detail.classList.contains("open")) {
-      if (e.key === "Escape") closeDetail();
-      if (e.key === "ArrowRight") stepDetail(1);
-      if (e.key === "ArrowLeft")  stepDetail(-1);
-    }
-  });
-
-  /* ---------------- 自定义光标 ---------------- */
-  const dot = document.getElementById("cursorDot");
-  document.addEventListener("mousemove", e => {
-    dot.style.left = e.clientX + "px";
-    dot.style.top  = e.clientY + "px";
-    document.body.classList.add("has-cursor");
-  });
-  document.addEventListener("mouseleave", () => document.body.classList.remove("has-cursor"));
-
-  /* ---------------- 初始化 ---------------- */
-  renderGrid();
-  renderNav();
+/* ================= 乱码文本块（It's me） ================= */
+(function makeMoji() {
+  const pool = "Ç‡Ž¥€§•AaBbCcŠšŒœ‹›€CoKENAxCGCE†‡C¡¢£C‹OCˆŠsÈÉÊËEeEELLEeAIAAAAÑñÇaAICdEvCvCgCC§O§sEAÌÌÌbÈCÈQÇQ2C§sAÌb";
+  let out = "";
+  for (let i = 0; i < 14; i++) {
+    let line = "";
+    for (let j = 0; j < 22; j++) line += pool[Math.floor(Math.random() * pool.length)];
+    out += line + "<br>";
+  }
+  document.getElementById("mojiBlock").innerHTML = out;
+})();
 </script>
 </body>
 </html>
